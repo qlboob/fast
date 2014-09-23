@@ -85,6 +85,7 @@ class Data:
 		self.closeDb()
 
 	#得到快捷方式的路径
+	#TODO 如果有~号，得到真实的路径
 	def getPathFromLink(self,lnkpath):
 		shortcut = self.shortcut
 		shortcut.QueryInterface( pythoncom.IID_IPersistFile ).Load(lnkpath)
@@ -848,7 +849,6 @@ class Window:
 			win32api.ShellExecute(0, 'open', hideAhk, '','./',1)
 		else:
 			self.app.destroy()
-		self.data.switchDb()
 
 	#设置提示的内容
 	def setPop(self,d,widget):
@@ -891,6 +891,7 @@ class Window:
 			else:
 				self.lastArgList = lastList
 			#self.listbox.selection_set(first=0,last=0)
+		self.data.switchDb()
 	#清空提示
 	def emptyPop(self):
 		size = self.listbox.size()
