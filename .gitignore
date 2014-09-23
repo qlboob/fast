@@ -1,3 +1,7 @@
 /__pycache__
 defaultexe/*
 *.swp
+db/*.*
+defaultexe/*.*
+exe/*.*
+url/*.*

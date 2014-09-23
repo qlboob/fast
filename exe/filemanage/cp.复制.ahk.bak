@@ -1,0 +1,139 @@
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+;TODO 复制前先检查目标位置是否有同名文件或文件夹
+
+cnt = %0%
+dest := ""
+
+if 0 < 2
+{
+	MsgBox, 参数少于2个
+	return
+}
+
+loop, %0%
+{
+	dest := %A_Index%
+	if(cnt>A_Index || cnt>2){
+		;检查源地址是否存在
+		if(!FileExist(dest)){
+			MsgBox, %dest%不存在
+			return
+		}
+	}
+	
+}
+
+
+;多个文件或文件夹复制到一个目录
+if 0 > 2
+{
+	;不是文件夹
+	if(!isDir(dest)){
+		MsgBox, %dest%不是目录
+	}
+	loopCnt := cnt-1
+	loop %loopCnt%{
+		src := %A_Index%
+		if(isFile(src)){
+			FileCopy, %src%, %dest%
+		}else{
+			SplitPath,src,fileName
+			FileCopyDir, %src%, %dest%\%fileName%
+		}
+		if ErrorLevel{
+			MsgBox, 复制%src%失败
+			return
+		}
+	}
+}
+else{
+	;复制一个文件或文件夹
+	src = %1%
+	SplitPath, src, srcFileName,srcFilePath,srcExt
+	SplitPath,dest,destFileName,destFilePath,destExt
+	if(isDir(src)){
+		if(isDir(dest)){
+			;目标地址已经是一个目录，复制到其子目录
+			FileCopyDir,%src%,%dest%\%srcFileName%
+		}else if(isDir(destFilePath)){
+			;复制并改名
+			FileCopyDir,%src%,%dest%
+		}else if(canUseFileName(dest)){
+			;复制到同级目录，并改名
+			FileCopyDir, %src%, %srcFilePath%\%dest%
+		}else{
+			MsgBox, %destFilePath%不是目录
+			return
+			
+		}
+	}
+	else{
+		if(isDir(dest)){
+			;直接复制到目录
+			FileCopy, %src%, %dest%
+		}else if(isDir(destFilePath)){
+				if(srcExt && srcExt!=destExt){
+					;自动补齐扩展名
+					FileCopy, %src%, %dest%.%srcExt%
+				}else{
+					FileCopy, %src%, %dest%
+				}
+		}else{
+			if(canUseFileName(dest)){
+				if(srcExt && srcExt!=destExt){
+					;自动补齐扩展名
+					FileCopy, %src%, %srcFilePath%\%dest%.%srcExt%
+				}else{
+					FileCopy,%src%,%srcFilePath%\%dest%
+				}
+			}else{
+				MsgBox,%destFilePath%不是目录
+				return
+			}
+		}
+	}
+	if ErrorLevel{
+		MsgBox, 复制%src%失败
+		return
+	}
+}
+
+isDir(path){
+	if(!FileExist(path)){
+		return false
+	}
+	file := FileOpen(path,"r")
+	if(IsObject(file)){
+		return false
+	}
+	return true
+	
+}
+
+
+isFile(path){
+	if(!FileExist(path)){
+		return false
+	}
+	file := FileOpen(path,"r")
+	if(IsObject(file)){
+		return true
+	}
+	return false
+	
+}
+
+canUseFileName(name){
+	chars := [":","/","\","*","?"]
+	loop % chars.MaxIndex(){
+		char := chars[A_Index]
+		if(instr(name,char)){
+			return false
+		}
+	}
+	return true
+}
