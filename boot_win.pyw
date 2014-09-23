@@ -878,7 +878,7 @@ class Window:
 				else:
 					path = i[0]
 				#print(path,i)
-				if insertedPath.get(path):
+				if dLen==1 and insertedPath.get(path):
 					continue
 				insertedPath[path]=1
 				self.listbox.insert(END,insertStr)
