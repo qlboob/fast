@@ -718,6 +718,8 @@ class Window:
 					if len(v)>1:
 						index = 1 
 					replaceStr = v[index]
+					if os.path.isdir(replaceStr):
+						replaceStr += '\\'
 					break
 
 
