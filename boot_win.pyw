@@ -85,12 +85,39 @@ class Data:
 		self.closeDb()
 
 	#得到快捷方式的路径
-	#TODO 如果有~号，得到真实的路径
 	def getPathFromLink(self,lnkpath):
 		shortcut = self.shortcut
 		shortcut.QueryInterface( pythoncom.IID_IPersistFile ).Load(lnkpath)
 		path = shortcut.GetPath(shell.SLGP_SHORTPATH)[0]  
-		return path
+		return self.expandPath(path)
+	#展开路径，路径中带有~号的情况
+	def expandPath(self,path):
+		newPath = path
+		while '~' in newPath:
+			if not os.path.isdir(newPath):
+				return path
+			prefix,suffix = newPath.split('~',1)
+			arrParent = prefix.split('\\')
+			prefixDirName = arrParent.pop() #要被解释的目录前缀
+			parentDir = '\\'.join(arrParent) #父目录
+			suffix = suffix.rstrip('\\') + '\\' #防止~1是最后一个的情况
+			index,leftPath = suffix.split('\\',1)
+			index = int(index)
+			#查找父目录下的所有文件或文件夹
+			files = os.listdir(parentDir)
+			finded = False
+			for f in files:
+				#文件名里面含有空格的情况
+				if 0==f.replace(' ','').upper().find(prefixDirName.upper()):
+					if 1==index:
+						#就是当前的目录
+						newPath = parentDir+'\\'+f+'\\' + leftPath
+						finded = True
+						break
+					index = index - 1
+			if not finded:
+				break
+		return newPath.rstrip('\\')
 
 	#得到url的快捷方式的实际地址
 	def getLinkUrl(self,file):
