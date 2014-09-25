@@ -107,7 +107,7 @@ class Data:
 			files = os.listdir(parentDir)
 			finded = False
 			for f in files:
-				#文件名里面含有空格的情况
+				#文件夹名里面含有空格的情况
 				if 0==f.replace(' ','').upper().find(prefixDirName.upper()):
 					if 1==index:
 						#就是当前的目录
@@ -619,6 +619,7 @@ class Window:
 		self.commandField.bind('<Control-l>',lambda e:self.useInput(e))
 		self.commandField.bind('<KeyRelease>',self.commandKeyEvent)
 		self.commandField.bind('<Tab>',lambda e:self.emptyPop())
+		self.commandField.bind('<Control-w>',lambda e:self.delWord(e))
 
 		self.argField.bind('<Control-j>',lambda e,x=1:self.moveItem(e,x,1))
 		self.argField.bind('<Control-k>',lambda e,x=-1:self.moveItem(e,x,1))
@@ -628,6 +629,7 @@ class Window:
 		self.argField.bind('<KeyRelease>',self.argKeyEvent)
 		#self.argField.bind('<Shift-KeyPress-Tab>',lambda e:self.emptyPop())
 		self.argField.bind('<Tab>',lambda e:self.emptyPop())
+		self.argField.bind('<Control-w>',lambda e:self.delWord(e))
 
 	#提示的item的信息
 	def getPopInfo(self,cstr,d):
@@ -876,6 +878,24 @@ class Window:
 			win32api.ShellExecute(0, 'open', hideAhk, '','./',1)
 		else:
 			self.app.destroy()
+
+	#删除一个单词
+	def delWord(self,e):
+		widget = e.widget
+		currentStr = widget.get()
+		strLen = len(currentStr)
+		if strLen:
+			i = strLen-1
+			char = currentStr[i]
+			lastIsChar = char.upper() != char.lower()
+			while i>-1:
+				i = i-1
+				char = currentStr[i]
+				if char.upper() == char.lower(): #非字母
+					if not lastIsChar:
+						i = i + 1
+					break
+			widget.delete(i,END)
 
 	#设置提示的内容
 	def setPop(self,d,widget):
