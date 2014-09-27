@@ -925,9 +925,9 @@ class Window:
 				else:
 					path = i[0]
 				#print(path,i)
-				if dLen==1 and insertedPath.get(path):
+				if dLen==1 and insertedPath.get(path.upper()):
 					continue
-				insertedPath[path]=1
+				insertedPath[path.upper()]=1
 				self.listbox.insert(END,insertStr)
 				insertCnt+=1
 				lastList.append(i)
