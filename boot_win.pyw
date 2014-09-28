@@ -235,7 +235,7 @@ class Data:
 					if not os.path.isfile(p):
 						continue
 				except Exception as e:
-					print(p)
+					#print(p)
 					continue
 			exeData[key] = {'path':p,'info':info}
 		return exeData
@@ -304,8 +304,8 @@ class Data:
 		for k,v in exeData.items():
 			self.cur.execute('INSERT INTO exepath(ab,path,info) VALUES("%s","%s","%s")'%(k,v['path'],v['info']))
 		exeEndTime = time.time()
-		print("exe time:")
-		print(exeEndTime-startTime)
+		#print("exe time:")
+		#print(exeEndTime-startTime)
 		#rewite exe data end
 
 		urlData = self.reindexUrl()
@@ -321,13 +321,13 @@ class Data:
 		for k,v in urlData.items():
 			self.cur.execute('INSERT INTO urlpath(ab,path,info) VALUES("%s","%s","%s")'%(k,v['path'],v['info']))
 		urlEndTime = time.time()
-		print('url time:')
-		print(urlEndTime - exeEndTime)
+		#print('url time:')
+		#print(urlEndTime - exeEndTime)
 
 		fileData = self.reindexFiles()
 		if fileData:
-			print("scan file time:")
-			print(time.time()-urlEndTime)
+			#print("scan file time:")
+			#print(time.time()-urlEndTime)
 			fileExist= self.getTableData('filepath')
 			#self.cur.execute('delete from filepath')
 			for v in fileExist:
@@ -337,8 +337,8 @@ class Data:
 					self.cur.execute('DELETE FROM filepath WHERE path="{0}"'.format(v[0]))
 			for v in fileData:
 				self.cur.execute('insert into filepath(path) values("%s")'%v)
-			print("file time:")
-			print(time.time()-urlEndTime)
+			#print("file time:")
+			#print(time.time()-urlEndTime)
 		
 		self.reindexHistory()
 		self.reduceSort()
@@ -417,7 +417,7 @@ class Data:
 		self.cur.execute(sql)
 		ret = self.cur.fetchall()
 		#print(ret)
-		print(sql)
+		#print(sql)
 		return ret
 
 	"""
@@ -470,13 +470,13 @@ class Data:
 					arrPath[-1]= '*'+'*'.join(fileChar) + '*'
 			searchStr = ' '.join(arrPath)
 		cmdStr += searchStr
-		print(cmdStr)
+		#print(cmdStr)
 		startTime = time.time()
 		handler = os.popen(cmdStr)
 		output = handler.read()
 		handler.close()
 		useTime = time.time() - startTime
-		print(useTime)
+		#print(useTime)
 		if output:
 			items = output.split("\n")
 			for item in items:
@@ -486,8 +486,8 @@ class Data:
 					self.everythingRun = False
 					return ret
 				ret.append((item,))
-		print(output)
-		print(ret)
+		#print(output)
+		#print(ret)
 		return ret
 	"""
 	提示历史使用过的文件
@@ -925,9 +925,10 @@ class Window:
 				else:
 					path = i[0]
 				#print(path,i)
-				if dLen==1 and insertedPath.get(path.upper()):
-					continue
-				insertedPath[path.upper()]=1
+				if insertedPath.get(path.upper()):
+					if 1==dLen:
+						continue
+				insertedPath[path.upper()]=True
 				self.listbox.insert(END,insertStr)
 				insertCnt+=1
 				lastList.append(i)
@@ -937,6 +938,8 @@ class Window:
 				self.lastCommandList = lastList
 			else:
 				self.lastArgList = lastList
+			print(d)
+			print(insertedPath)
 			#self.listbox.selection_set(first=0,last=0)
 		self.data.switchDb()
 	#清空提示
