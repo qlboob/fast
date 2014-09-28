@@ -747,10 +747,10 @@ class Window:
 				if currentStr == v[0]:
 					if len(v)>1:
 						index = 1 
-					replaceStr = v[index]
-					if os.path.isdir(replaceStr):
-						replaceStr += '\\'
-					break
+						replaceStr = v[index]
+						break
+		if os.path.isdir(replaceStr):
+			replaceStr += '\\'
 
 
 		if replaceStr:
