@@ -56,7 +56,7 @@ class Data:
 		self.cur = self.con.cursor()
 		if os.path.getsize(dbFile) < 10:
 			#create db
-			for sql in ['CREATE TABLE filepath ( path varchar(100), sort INT default 0 )','CREATE TABLE exepath(ab varchar(10),path varchar(100), info varchar(10), sort INT default 0)','CREATE TABLE urlpath(ab varchar(10),path varchar(100), info varchar(10), sort INT default 0)','CREATE TABLE historyfile ( path varchar(100), sort INT DEFAULT 0)']:
+			for sql in ['CREATE TABLE filepath ( path varchar(100), sort INT default 0 )','CREATE TABLE exepath(ab varchar(10),path varchar(100), info varchar(10), sort INT default 0)','CREATE TABLE urlpath(ab varchar(10),path varchar(100), info varchar(10), sort INT default 0)','CREATE TABLE historyfile ( path varchar(100), sort INT DEFAULT 0, PRIMARY KEY (path COLLATE NOCASE) )']:
 				self.cur.execute(sql)
 			self.reindex()
 			self.switchDb()
