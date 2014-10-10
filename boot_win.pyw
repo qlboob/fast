@@ -742,21 +742,20 @@ class Window:
 				index = 1 
 			replaceStr = fileT[index]
 		else:
+			for v in currentList:
+				if currentStr == v[0]:
+					if len(v)>1:
+						index = 1 
+						replaceStr = v[index]
+						break
 			#没有选择使用完全匹配，如果只有一个直接使用
-			if 1==len(currentList):
+			if len(currentList)>0 and not replaceStr:
 				v=currentList[0]
 				if len(v)>1:
 					replaceStr = v[1]
 				else:
 					replaceStr=v[0]
 					
-			else:
-				for v in currentList:
-					if currentStr == v[0]:
-						if len(v)>1:
-							index = 1 
-							replaceStr = v[index]
-							break
 		if os.path.isdir(replaceStr):
 			replaceStr += '\\'
 
