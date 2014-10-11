@@ -1,6 +1,7 @@
 /__pycache__
 defaultexe/*
 *.swp
+*.swo
 db/*.*
 defaultexe/*.*
 exe/*.*

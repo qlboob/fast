@@ -777,6 +777,7 @@ class Window:
 				self.data.addSort('urlpath',str)
 				str = self.data.findUrl(str) or self.data.findFile(str) or str
 				if os.path.isfile(str):
+					self.data.addSort('filepath',str,'path')
 					self.executePath = os.path.dirname(str)
 				elif os.path.isdir(str):
 					self.executePath = str
