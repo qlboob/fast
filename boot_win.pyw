@@ -628,8 +628,12 @@ class Window:
 		self.argField.bind('<Control-o>',lambda e:self.addArg(e,False))
 		self.argField.bind('<KeyRelease>',self.argKeyEvent)
 		#self.argField.bind('<Shift-KeyPress-Tab>',lambda e:self.emptyPop())
-		self.argField.bind('<Tab>',lambda e:self.emptyPop())
+		self.argField.bind('<Tab>',self.argTabExecute)
 		self.argField.bind('<Control-w>',lambda e:self.delWord(e))
+
+		#listbox
+		#阻止listbox得到焦点
+		self.listbox.bind('<FocusIn>',lambda e:self.commandField.focus())
 
 	#提示的item的信息
 	def getPopInfo(self,cstr,d):
@@ -763,6 +767,16 @@ class Window:
 		if replaceStr:
 			widget.delete(0,END)
 			widget.insert(END,replaceStr)
+		return replaceStr
+
+
+	#参数框输入tab直接使用候选执行
+	def argTabExecute(self,e):
+		replaceStr = self.useInput(e,1)
+		if replaceStr:
+			self.execute()
+		#事件中通过return break可以阻止事件后续及冒泡
+		return 'break'
 
 
 	#得到参数
