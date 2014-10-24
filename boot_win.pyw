@@ -583,6 +583,8 @@ class Window:
 		self.lastInput = ['','']
 		#提示的条目数
 		self.maxItem = 10
+		#ctrlkey 是否按下
+		self.ctrlKey=False
 
 		app = Tk()
 		self.app = app
@@ -617,15 +619,18 @@ class Window:
 		self.commandField.bind('<Control-j>',lambda e,x=1:self.moveItem(e,x))
 		self.commandField.bind('<Control-k>',lambda e,x=-1:self.moveItem(e,x))
 		self.commandField.bind('<Control-l>',lambda e:self.useInput(e))
+		self.commandField.bind('<KeyPress>',self.keyPressEvent)
 		self.commandField.bind('<KeyRelease>',self.commandKeyEvent)
-		self.commandField.bind('<Tab>',lambda e:self.emptyPop())
+		self.commandField.bind('<Tab>',lambda e:self.useInput(e) or self.emptyPop())
 		self.commandField.bind('<Control-w>',lambda e:self.delWord(e))
+		#self.commandField.bind('<Control-Enter>',lambda e:self.ctrlExecute(e))
 
 		self.argField.bind('<Control-j>',lambda e,x=1:self.moveItem(e,x,1))
 		self.argField.bind('<Control-k>',lambda e,x=-1:self.moveItem(e,x,1))
 		self.argField.bind('<Control-l>',lambda e:self.useInput(e,1))
 		self.argField.bind('<Control-i>',lambda e:self.addArg(e,True))
 		self.argField.bind('<Control-o>',lambda e:self.addArg(e,False))
+		self.argField.bind('<KeyPress>',self.keyPressEvent)
 		self.argField.bind('<KeyRelease>',self.argKeyEvent)
 		#self.argField.bind('<Shift-KeyPress-Tab>',lambda e:self.emptyPop())
 		self.argField.bind('<Tab>',self.argTabExecute)
@@ -646,9 +651,12 @@ class Window:
 		return d
 
 	def commandKeyEvent(self,e):
+		self.keyPressEvent(e)
 		cstr = self.commandField.get()
-		#print(e.keycode)
+		print(e.keycode)
 		if 13==e.keycode:
+			if self.ctrlKey:
+				self.useInput(e)
 			self.execute()
 		elif cstr == self.lastInput[0]:
 			#与上次输入内容相同不做更新
@@ -662,10 +670,24 @@ class Window:
 			self.lastInput[0] = cstr
 			#清空上一次选择
 			self.selectTxt[0] = ''
+	
+	def keyPressEvent(self,e,val=True):
+		if '2'==e.type:
+			#KeyPress
+			val=True
+		elif '3'==e.type:
+			#KeyRelease
+			val=False
+		if 17==e.keycode:
+			self.ctrlKey = val
+			print(val)
 			
 	def argKeyEvent(self,e):
+		self.keyPressEvent(e)
 		astr = self.argField.get()
 		if 13 == e.keycode:
+			if self.ctrlKey:
+				self.useInput(e)
 			self.execute()
 		elif astr == self.lastInput[1]:
 			#与上次输入内容相同不做更新
@@ -736,7 +758,8 @@ class Window:
 		widget = e.widget
 		select = self.listbox.curselection()
 		currentStr = widget.get()
-		currentList = self.lastArgList if filedIndex else self.lastCommandList
+		#currentList = self.lastArgList if filedIndex else self.lastCommandList
+		currentList = self.lastArgList if widget==self.argField else self.lastCommandList
 		replaceStr = ''
 		index = 0
 		if select:
@@ -778,6 +801,12 @@ class Window:
 		#事件中通过return break可以阻止事件后续及冒泡
 		return 'break'
 
+	#使用修行执行
+	def ctrlExecute(self,e):
+		replaceStr = self.useInput(e)
+		if replaceStr:
+			self.execute()
+		return 'break'
 
 	#得到参数
 	def getExecuteArg(self,arg):
@@ -960,8 +989,8 @@ class Window:
 				self.lastCommandList = lastList
 			else:
 				self.lastArgList = lastList
-			print(d)
-			print(insertedPath)
+			#print(d)
+			#print(insertedPath)
 			#self.listbox.selection_set(first=0,last=0)
 		self.data.switchDb()
 	#清空提示
