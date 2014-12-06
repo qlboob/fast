@@ -621,7 +621,7 @@ class Window:
 		self.commandField.bind('<Control-l>',lambda e:self.useInput(e))
 		self.commandField.bind('<KeyPress>',self.keyPressEvent)
 		self.commandField.bind('<KeyRelease>',self.commandKeyEvent)
-		self.commandField.bind('<Tab>',lambda e:self.useInput(e) or self.emptyPop())
+		self.commandField.bind('<Tab>',lambda e:self.emptyPop())
 		self.commandField.bind('<Control-w>',lambda e:self.delWord(e))
 		#self.commandField.bind('<Control-Enter>',lambda e:self.ctrlExecute(e))
 
