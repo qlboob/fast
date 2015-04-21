@@ -93,16 +93,26 @@ class Data:
 	#展开路径，路径中带有~号的情况
 	def expandPath(self,path):
 		newPath = path
+		print(newPath)
+		if '~' in newPath and os.path.isdir(newPath):
+			print(newPath)
 		while '~' in newPath:
 			if not os.path.isdir(newPath):
 				return path
 			prefix,suffix = newPath.split('~',1)
 			arrParent = prefix.split('\\')
-			prefixDirName = arrParent.pop() #要被解释的目录前缀
+			prefixDirName = arrParent.pop() #要被解析的目录前缀
 			parentDir = '\\'.join(arrParent) #父目录
 			suffix = suffix.rstrip('\\') + '\\' #防止~1是最后一个的情况
 			index,leftPath = suffix.split('\\',1)
-			index = int(index)
+			if len(str(index))>1:
+				#TODO E:\job\project\ICMIDE~1.COM 这种情况未处理
+				break
+			#print(index)
+			try:
+				index = int(index)
+			except Exception as e:
+				break
 			#查找父目录下的所有文件或文件夹
 			files = os.listdir(parentDir)
 			finded = False
