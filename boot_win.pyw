@@ -2,7 +2,7 @@
 
 from tkinter import *
 
-import os,threading,sys
+import os,threading,sys,re
 import pythoncom
 from win32com.shell import shell  
 from win32com.shell import shellcon
@@ -92,42 +92,32 @@ class Data:
 		return self.expandPath(path)
 	#展开路径，路径中带有~号的情况
 	def expandPath(self,path):
-		newPath = path
-		print(newPath)
-		if '~' in newPath and os.path.isdir(newPath):
-			print(newPath)
-		while '~' in newPath:
-			if not os.path.isdir(newPath):
-				return path
-			prefix,suffix = newPath.split('~',1)
-			arrParent = prefix.split('\\')
-			prefixDirName = arrParent.pop() #要被解析的目录前缀
-			parentDir = '\\'.join(arrParent) #父目录
-			suffix = suffix.rstrip('\\') + '\\' #防止~1是最后一个的情况
-			index,leftPath = suffix.split('\\',1)
-			if len(str(index))>1:
-				#TODO E:\job\project\ICMIDE~1.COM 这种情况未处理
-				break
-			#print(index)
-			try:
-				index = int(index)
-			except Exception as e:
-				break
-			#查找父目录下的所有文件或文件夹
-			files = os.listdir(parentDir)
-			finded = False
-			for f in files:
-				#文件夹名里面含有空格的情况
-				if 0==f.replace(' ','').upper().find(prefixDirName.upper()):
-					if 1==index:
-						#就是当前的目录
-						newPath = parentDir+'\\'+f+'\\' + leftPath
-						finded = True
-						break
-					index = index - 1
-			if not finded:
-				break
-		return newPath.rstrip('\\')
+		if not os.path.isdir(path):
+			return path
+		if '~' in path:
+			arrPath = path.split('\\')
+			prefixDir = arrPath.pop(0)+'\\'
+			while len(arrPath):
+				iDir = arrPath.pop(0)
+				if '~' in iDir:
+					#使用dos命令 “dir /x”找到代~目录的原名称
+					handler = os.popen('dir /x '+prefixDir)
+					output = handler.read()
+					handler.close()
+					if output:
+						items = output.split("\n")
+						for line in items:
+							if iDir not in line:
+								continue
+							cells=re.split(' +',line,5)
+							if 5==len(cells) and iDir==cells[3]:
+								iDir=cells[4]
+								break
+				prefixDir += iDir+'\\'
+			return prefixDir.rstrip('\\')
+		return path
+							
+
 
 	#得到url的快捷方式的实际地址
 	def getLinkUrl(self,file):
@@ -948,11 +938,11 @@ class Window:
 		if strLen:
 			i = strLen-1
 			char = currentStr[i]
-			lastIsChar = char.upper() != char.lower()
+			lastIsChar = re.match('\w',char)
 			while i>-1:
 				i = i-1
 				char = currentStr[i]
-				if char.upper() == char.lower(): #非字母
+				if not re.match('\w',char): #非字母
 					if not lastIsChar:
 						i = i + 1
 					break
