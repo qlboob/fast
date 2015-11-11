@@ -385,10 +385,10 @@ class Data:
 	def popFile(self,pattern,table='filepath'):
 		arr = pattern.split(' ')
 		where = []
-		#最后一个当作文件名，文件名只要求顺序一致即可
+		#最后一个当作文件名
 		fileSearch = arr.pop()
-		fileChar = [x for x in fileSearch]
-		where.append('fileName(path) LIKE "%{0}%"'.format('%'.join(fileChar)))
+		fileSearch = fileSearch.replace(".","%.")
+		where.append('fileName(path) LIKE "%{0}%"'.format(fileSearch))
 		if len(arr) > 0:
 			#检查第一个是否有别名定义
 			favior = arr[0]
