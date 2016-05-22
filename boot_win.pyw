@@ -460,14 +460,14 @@ class Data:
 		arrPath = pattern.split(' ')
 		if len(arrPath)>1:
 			#包含空格的情况，允许路径搜索
-			cmdStr += '-p '
+			#cmdStr += '-p '
 			faviorDir = self.getFavoriteDir(arrPath[0])
 			if faviorDir:
 				arrPath[0] = faviorDir
 				#这样everything搜索必须前后都要加*号
-				if arrPath[-1]:
-					fileChar = [x for x in arrPath[-1]]
-					arrPath[-1]= '*'+'*'.join(fileChar) + '*'
+				#if arrPath[-1]:
+					#fileChar = [x for x in arrPath[-1]]
+					#arrPath[-1]= '*'+'*'.join(fileChar) + '*'
 			searchStr = ' '.join(arrPath)
 		cmdStr += searchStr
 		#print(cmdStr)
