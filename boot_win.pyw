@@ -35,11 +35,14 @@ class Data:
 		self.everythingRun = True
 
 		#使用的正式库文件
+		dbPath = self.path+'db/'
 		self.dbFile = self.path + 'db/boot.db3'
 		#生成过程中的库文件
 		self.tmpDbFile = self.path + 'db/boot_tmp.db3'
 		#生成结束的库文件
 		self.okDbFile = self.path + 'db/boot_ok.db3'
+		if not os.path.isdir(dbPath):
+			os.mkdir(dbPath)
 		self.initDb(self.dbFile)
 
 
