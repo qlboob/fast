@@ -939,11 +939,11 @@ class Window:
 		if strLen:
 			i = strLen-1
 			char = currentStr[i]
-			lastIsChar = re.match('\w',char)
+			lastIsChar = re.match('\w',char) or '.'==char
 			while i>-1:
 				i = i-1
 				char = currentStr[i]
-				if not re.match('\w',char): #非字母
+				if not re.match('\w',char) and '.'!=char: #非字母
 					if not lastIsChar:
 						i = i + 1
 					break
