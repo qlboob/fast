@@ -98,6 +98,7 @@ class Data:
 		if not os.path.exists(path):
 			return path
 		if '~' in path:
+			#TODO dir /x 命令的结果格式在不同机器上可能有偏差
 			splitCnt = 5
 			arrPath = path.split('\\')
 			prefixDir = arrPath.pop(0)+'\\'
