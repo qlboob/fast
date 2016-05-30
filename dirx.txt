@@ -1,0 +1,54 @@
+C:\Users\Administrator>dir /x C:\Users\ADMINI~1\AppData\Local\Kingsoft\POWERW~1\
+201621~1.3
+ 驱动器 C 中的卷是 Win7
+ 卷的序列号是 0008-DE4E
+
+ C:\Users\ADMINI~1\AppData\Local\Kingsoft\POWERW~1\201621~1.3 的目录
+
+2016/04/29 周五  11:13    <DIR>                       .
+2016/04/29 周五  11:13    <DIR>                       ..
+2016/04/21 周四  12:24            57,600 ACRO2D~1.DLL acro2dict.dll
+2016/04/21 周四  12:24            90,880 CBDBCO~1.DLL CBDBCoreplus.dll
+2016/04/21 周四  12:24         2,478,848 CBGRAB~1.EXE CBGrabConnect_x64.exe
+2016/04/21 周四  12:24           329,472 CBGRAB~1.DLL CBGrabModule_x64.dll
+2016/04/21 周四  12:24           693,504 CBGRAB~2.DLL CBGrabProxy.dll
+2016/04/21 周四  12:24         1,814,784              CBParser.dll
+2016/04/21 周四  12:24           130,304 CBSELE~1.DLL CBSelectText.dll
+2016/04/21 周四  12:24            73,472 CBSELE~2.DLL CBSelectText_x64.dll
+2016/04/21 周四  12:24    <DIR>                       config
+2016/04/21 周四  12:24    <DIR>                       dicts
+2016/04/21 周四  12:24         7,008,000              fqtesdk.dll
+2016/04/21 周四  12:24           270,398              iciba.ico
+2016/04/21 周四  12:24                46              icibaweb.url
+2016/04/21 周四  12:24    <DIR>          IMAGEF~1     imageformats
+2016/04/21 周四  12:24           100,096              Index.dll
+2016/04/21 周四  12:24           187,648 KSDDOW~1.EXE ksddownloader.exe
+2016/04/15 周五  00:00         1,664,384              ktpcntr.exe
+2016/04/21 周四  12:24         1,312,000              libeay32.dll
+2016/04/21 周四  12:24           208,128 LIBOPE~1.DLL libopencore-amrnb-0.dll
+2016/04/21 周四  12:24         1,198,848              minisite.exe
+2016/04/21 周四  12:24           145,205              minisite.ico
+2016/04/21 周四  12:24               993              minisite.ini
+2016/04/21 周四  12:24           421,200              msvcp100.dll
+2016/04/21 周四  12:24           773,968              msvcr100.dll
+2016/04/21 周四  12:24            32,512              openaes.dll
+2016/04/21 周四  12:24    <DIR>                       plugin
+2016/04/21 周四  12:24         6,677,760 POWERW~1.EXE PowerWord.exe
+2016/04/21 周四  12:24           147,095 POWERW~1.ICO powerword.ico
+2016/04/21 周四  12:24            23,808 POWERW~2.EXE powerwordhelper.exe
+2016/04/21 周四  12:24         9,261,312              QtCore4.dll
+2016/04/21 周四  12:24           912,128 QTNETW~1.DLL QtNetwork4.dll
+2016/04/21 周四  12:24        12,655,360 QTWEBK~1.DLL QtWebKit4.dll
+2016/04/21 周四  12:24            40,704 REGPOW~1.EXE regpowerword.exe
+2016/04/21 周四  12:24    <DIR>          RESOUR~1     resources
+2016/04/21 周四  12:24            60,160              selfix.exe
+2016/04/21 周四  12:24           284,416              ssleay32.dll
+2016/04/29 周五  11:13         1,121,536              update.exe
+2016/04/21 周四  12:24                 0              update.log
+2016/04/21 周四  12:24           491,776 UPDATE~1.EXE updateself.exe
+2016/04/21 周四  12:24                81 UPDATE~1.INI updateself.ini
+2016/04/21 周四  12:24    <DIR>          UPDATE~1     update_res
+2016/04/21 周四  12:24    <DIR>                       utility
+2016/04/21 周四  12:24            84,224              zlibwrap.dll
+              36 个文件     50,752,650 字节
+               9 个目录 64,882,077,696 可用字节

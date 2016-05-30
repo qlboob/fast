@@ -98,6 +98,7 @@ class Data:
 		if not os.path.exists(path):
 			return path
 		if '~' in path:
+			splitCnt = 5
 			arrPath = path.split('\\')
 			prefixDir = arrPath.pop(0)+'\\'
 			while len(arrPath):
@@ -112,9 +113,9 @@ class Data:
 						for line in items:
 							if iDir not in line:
 								continue
-							cells=re.split(' +',line,4)
-							if 5==len(cells) and iDir==cells[3]:
-								iDir=cells[4]
+							cells=re.split(' +',line,splitCnt)
+							if splitCnt+1==len(cells) and iDir==cells[splitCnt-1]:
+								iDir=cells[splitCnt]
 								break
 				prefixDir += iDir+'\\'
 			return prefixDir.rstrip('\\')
@@ -257,9 +258,9 @@ class Data:
 				truePath = self.getLinkUrl(f)
 			elif 'lnk'==ext:
 				truePath = self.getPathFromLink(f)
-				if not os.path.isfile(truePath) and not os.path.isdir(truePath):
+				if not os.path.exists(truePath):
 					continue
-			siteData[pnames[0].lower()] = {'path':truePath,'info':info}
+			siteData[pnames[0].lower()] = {'path':self.expandPath(truePath),'info':info}
 		return siteData
 
 	def reindexFiles(self):
