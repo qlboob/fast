@@ -95,7 +95,7 @@ class Data:
 		return self.expandPath(path)
 	#展开路径，路径中带有~号的情况
 	def expandPath(self,path):
-		if not os.path.isdir(path):
+		if not os.path.exists(path):
 			return path
 		if '~' in path:
 			arrPath = path.split('\\')
@@ -104,7 +104,7 @@ class Data:
 				iDir = arrPath.pop(0)
 				if '~' in iDir:
 					#使用dos命令 “dir /x”找到代~目录的原名称
-					handler = os.popen('dir /x '+prefixDir)
+					handler = os.popen('dir /x "'+prefixDir+'"')
 					output = handler.read()
 					handler.close()
 					if output:
@@ -112,7 +112,7 @@ class Data:
 						for line in items:
 							if iDir not in line:
 								continue
-							cells=re.split(' +',line,5)
+							cells=re.split(' +',line,4)
 							if 5==len(cells) and iDir==cells[3]:
 								iDir=cells[4]
 								break
@@ -443,7 +443,7 @@ class Data:
 		if os.path.isdir(path):
 			files = os.listdir(path)
 			for f in files:
-				if f in ['$RECYCLE.BIN','$Recycle.Bin','System Volume Information']:
+				if f in ['$RECYCLE.BIN','$Recycle.Bin','System Volume Information','.git','.svn']:
 					continue
 				if file.lower() in f.lower():
 					realPath = os.path.join(path,f)
@@ -538,8 +538,9 @@ class Data:
 	
 	#增加历史操作记录文件
 	def addHistory(self,file):
-		file = file.replace('/','\\')
-		if '\\' in file and (os.path.isfile(file) or os.path.isdir(file)):
+		file = file.strip().replace('/','\\')
+		if '\\' in file and os.path.exists(file):
+			file = self.expandPath(file).lower()
 			sql = 'SELECT path FROM historyfile WHERE path="%s"'%(file)
 			self.cur.execute(sql)
 			if self.cur.fetchone():
@@ -941,11 +942,11 @@ class Window:
 		if strLen:
 			i = strLen-1
 			char = currentStr[i]
-			lastIsChar = re.match('\w',char)
+			lastIsChar = re.match('\w',char) or '.'==char
 			while i>-1:
 				i = i-1
 				char = currentStr[i]
-				if not re.match('\w',char): #非字母
+				if not re.match('\w',char) and '.'!=char: #非字母
 					if not lastIsChar:
 						i = i + 1
 					break
