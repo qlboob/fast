@@ -99,7 +99,7 @@ class Data:
 			return path
 		if '~' in path:
 			#TODO dir /x 命令的结果格式在不同机器上可能有偏差
-			splitCnt = 5
+			splitCnt = 4
 			arrPath = path.split('\\')
 			prefixDir = arrPath.pop(0)+'\\'
 			while len(arrPath):
@@ -114,6 +114,8 @@ class Data:
 						for line in items:
 							if iDir not in line:
 								continue
+							if re.match('^\d{4}/\d{2}/\d{2} 周',line):#有些机器显示的时间代星期
+								splitCnt=5
 							cells=re.split(' +',line,splitCnt)
 							if splitCnt+1==len(cells) and iDir==cells[splitCnt-1]:
 								iDir=cells[splitCnt]
