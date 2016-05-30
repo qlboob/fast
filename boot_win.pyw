@@ -129,7 +129,7 @@ class Data:
 		for line in fp:
 			if line[0:4]=='URL=':
 				fp.close()
-				return line[4:].strip()
+				return self.expandPath(line[4:].strip())
 
 	#得到文件夹下所有的文件，可以指定扩展名和是否包括子目录
 	def getFolderFiles(self,folder,ext='',recursion=True):
@@ -234,7 +234,7 @@ class Data:
 			if pnames[-1] == 'lnk':
 				#有可能快捷方式已经失效
 				try:
-					p = self.getPathFromLink(p)
+					p = self.expandPath(self.getPathFromLink(p))
 					if not os.path.isfile(p):
 						continue
 				except Exception as e:
