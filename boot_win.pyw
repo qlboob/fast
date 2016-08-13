@@ -279,6 +279,9 @@ class Data:
 			ret = set(ret)
 			#print(ret)
 			return list(ret)
+		else:
+			handler=open(configFile,'w')
+			handler.close()
 	def reindexHistory(self):
 		ret = []
 		historyF = self.getTableData('historyfile')
