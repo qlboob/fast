@@ -280,7 +280,7 @@ class Data:
 			#print(ret)
 			return list(ret)
 		else:
-			handler=open(configFile,'w')
+			handler=open(configFile,'w','utf-8')
 			handler.close()
 	def reindexHistory(self):
 		ret = []
