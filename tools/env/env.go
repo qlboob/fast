@@ -11,10 +11,10 @@ import (
 )
 func main(){
 	files := make([]string, 0)
-	files = append(files,"conf/common.txt")
 	if 2==len(os.Args){
 		files = append(files,"conf/"+os.Args[1]+".txt")
 	}
+	files = append(files,"conf/common.txt")
 
 	result := ""
 	for _,file := range files {
